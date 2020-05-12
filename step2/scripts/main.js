@@ -1,5 +1,6 @@
 function init() {
   ajaxCall();
+  moment.locale('it');
 
 }
 

@@ -2,11 +2,16 @@ function myChart1(data){
   var dataType = data.d1['type'];
   var dataValue = data.d1['data'];
 
+  var months = moment.months();
+
+
+
+
   var ctx = $('#line');
   var myChart = new Chart(ctx, {
       type: dataType,
       data: {
-          labels:["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"] ,
+          labels: capitaliseMonth(months),
           datasets: [{
               label: 'Vendite',
               data: dataValue,
@@ -54,14 +59,16 @@ function myChart1(data){
 };
 
 function myChart2(data) {
+  var dataLabels = data.d2['labels'];
+  var dataValue = data.d2['data'];
   var ctx = $('#pie');
   var myChart = new Chart(ctx, {
       type: data.d2['type'],
       data: {
-          labels: data.d2['labels'] ,
+          labels: dataLabels ,
           datasets: [{
               label: '# of Votes',
-              data: data.d2['data'],
+              data: dataValue,
               backgroundColor: [
                 // 'rgba(150, 33, 146, 1)',
                 'rgba(82, 40, 204, 1)',
@@ -90,3 +97,20 @@ function myChart2(data) {
       }
   });
 }
+
+function capitaliseMonth(array) {
+    var monthsUpperCase = [];
+    for (var i = 0; i < array.length; i++) {
+      var singleMonth = array[i];
+      var firstLetter = singleMonth.charAt(0);
+      var firstLetterUpper = firstLetter.toUpperCase();
+      // console.log("firstletter ",firstLetter);
+      // console.log("letterUpperCase ",firstLetterUpper);
+      var finalMonth = singleMonth.replace(firstLetter,firstLetterUpper)
+      // console.log("final month ",finalMonth);
+      monthsUpperCase.push(finalMonth);
+    }
+    console.log("arrayCompleto con prima lettera maiuscola ",monthsUpperCase);
+    return monthsUpperCase;
+
+  }
