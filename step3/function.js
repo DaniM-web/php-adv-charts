@@ -1,12 +1,28 @@
+
 function callAjax() {
   $.ajax({
     url: 'server.php',
     method: 'GET',
     success: function (data) {
       var months = moment.months();
-      myChart1(data,months);
-      myChart2(data);
-      myChart3(data,months);
+      var queryString = window.location.search;
+
+      var urlParams = new URLSearchParams(queryString);
+      var levelQuery = urlParams.get('level');
+      console.log(levelQuery);
+
+      if (levelQuery == data.d1['access']) {
+        myChart1(data,months);
+      } else if (levelQuery == data.d2['access']) {
+        myChart1(data,months);
+        myChart2(data);
+      } else{
+        myChart1(data,months);
+        myChart2(data);
+        myChart3(data,months);
+      }
+
+
     },
     error: function (error) {
       console.log("Error!!!");
@@ -163,18 +179,13 @@ function myChart3(data,months) {
 
 
 
-
-
-
-
-
 function capitaliseMonth(array) {
     var monthsUpperCase = [];
     for (var i = 0; i < array.length; i++) {
       var singleMonth = array[i];
       var firstLetter = singleMonth.charAt(0);
       var firstLetterUpper = firstLetter.toUpperCase();
-      var finalMonth = singleMonth.replace(firstLetter,firstLetterUpper)
+      var finalMonth = singleMonth.replace(firstLetter,firstLetterUpper);
       monthsUpperCase.push(finalMonth);
     }
     console.log("arrayCompleto con prima lettera maiuscola ",monthsUpperCase);
