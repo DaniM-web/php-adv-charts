@@ -106,7 +106,7 @@ function capitaliseMonth(array) {
       var firstLetterUpper = firstLetter.toUpperCase();
       // console.log("firstletter ",firstLetter);
       // console.log("letterUpperCase ",firstLetterUpper);
-      var finalMonth = singleMonth.replace(firstLetter,firstLetterUpper)
+      var finalMonth = singleMonth.replace(firstLetter,firstLetterUpper);
       // console.log("final month ",finalMonth);
       monthsUpperCase.push(finalMonth);
     }
