@@ -3,27 +3,21 @@ require 'database.php';
 
 header('Content-Type: application/json');
 
+$res = [
+  'type' => $graphs['fatturato_by_agent']['type']
+];
+
 $dataObj = $graphs['fatturato_by_agent']['data'];
+
 $dataValue = [];
 $dataKeys = [];
 
 foreach ( $dataObj as $key => $value) {
   $dataValue[] = $value;
   $dataKeys[] = $key;
-}
+};
 
-$res = [
-  'd1' => [
-    'type' => 'line',
-    'data' => [1000,1322,1123,2301,3288,988,502,2300,5332,2300,1233,2322]
-    ],
-
-    'd2' =>[
-      'type' => 'pie',
-      'data' => $dataValue,
-      'labels' => $dataKeys
-    ]
-];
+$res['labels'] = $dataKeys;
+$res['data'] = $dataValue;
 
 echo json_encode($res);
- ?>

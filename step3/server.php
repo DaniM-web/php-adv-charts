@@ -20,29 +20,58 @@ foreach ($d3Array as $key => $value) {
 
 }
 
+$guest = $graphs['fatturato'];
 
-$req = [
-  'd1' => [
-    'type' => $graphs['fatturato']['type'],
-    'data' => [1000,1322,1123,2301,3288,988,502,2300,5332,2300,1233,2322],
-    'access' => $graphs['fatturato']['access']
-  ],
-  'd2' => [
+$employee = [
+  'd1' => $guest,
+  'd2' =>[
     'type' => $graphs['fatturato_by_agent']['type'],
     'labels' => $d2Labels,
     'data' => $d2DataValues,
     'access' => $graphs['fatturato_by_agent']['access']
-  ],
+  ]
+];
+
+$clevel = [
+  'd1' => $guest,
+  'd2' => $employee['d2'],
   'd3' => [
     'type' => $graphs['team_efficiency']['type'],
     'data' => $d3DataValues,
     'labels' => $d3Labels,
     'access' => $graphs['team_efficiency']['access']
-
   ]
 ];
 
+$level = $_GET[level];
+
+if ($level == "guest") {
+  echo json_encode($guest);
+} elseif ($level == "employee") {
+  echo json_encode($employee);
+} else {
+  echo json_encode($clevel);
+}
+
+
+// $req = [
+//   'd1' => $graphs['fatturato'],
+//   'd2' => [
+//     'type' => $graphs['fatturato_by_agent']['type'],
+//     'labels' => $d2Labels,
+//     'data' => $d2DataValues,
+//     'access' => $graphs['fatturato_by_agent']['access']
+//   ],
+//   'd3' => [
+//     'type' => $graphs['team_efficiency']['type'],
+//     'data' => $d3DataValues,
+//     'labels' => $d3Labels,
+//     'access' => $graphs['team_efficiency']['access']
+//
+//   ]
+// ];
 
 
 
-echo json_encode($req);
+
+// echo json_encode($req);

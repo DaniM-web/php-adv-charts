@@ -1,10 +1,8 @@
 function myChart1(data){
-  var dataType = data.d1['type'];
-  var dataValue = data.d1['data'];
+  var dataType = data['type'];
+  var dataValue = data['data'];
 
   var months = moment.months();
-
-
 
 
   var ctx = $('#line');
@@ -59,11 +57,11 @@ function myChart1(data){
 };
 
 function myChart2(data) {
-  var dataLabels = data.d2['labels'];
-  var dataValue = data.d2['data'];
+  var dataLabels = data['labels'];
+  var dataValue = data['data'];
   var ctx = $('#pie');
   var myChart = new Chart(ctx, {
-      type: data.d2['type'],
+      type: data['type'],
       data: {
           labels: dataLabels ,
           datasets: [{

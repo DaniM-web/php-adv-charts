@@ -1,27 +1,25 @@
+function getQuery() {
+  var queryString = window.location.search;
+
+  var urlParams = new URLSearchParams(queryString);
+  var levelQuery = urlParams.get('level');
+
+  return levelQuery;
+}
 
 function callAjax() {
   $.ajax({
     url: 'server.php',
     method: 'GET',
+    data: {
+      level: getQuery()
+    },
     success: function (data) {
       var months = moment.months();
-      var queryString = window.location.search;
-
-      var urlParams = new URLSearchParams(queryString);
-      var levelQuery = urlParams.get('level');
-      console.log(levelQuery);
-
-      if (levelQuery == data.d1['access']) {
-        myChart1(data,months);
-      } else if (levelQuery == data.d2['access']) {
-        myChart1(data,months);
-        myChart2(data);
-      } else{
-        myChart1(data,months);
-        myChart2(data);
-        myChart3(data,months);
-      }
-
+      
+      myChart1(data['d1'],months);
+      myChart2(data['d2']);
+      myChart3(data['d3'],months);
 
     },
     error: function (error) {
@@ -34,12 +32,12 @@ function myChart1(data,months) {
 
   var ctx = $('#chart1');
   var myChart = new Chart(ctx, {
-      type: data.d1['type'],
+      type: data['type'],
       data: {
           labels: capitaliseMonth(months),
           datasets: [{
               label: '# of Votes',
-              data: data.d1['data'],
+              data: data['data'],
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
@@ -59,7 +57,7 @@ function myChart1(data,months) {
               borderWidth: 1
           }]
       },
-      access: data.d1['access'],
+      access: data['access'],
       options: {
           scales: {
               yAxes: [{
@@ -76,12 +74,12 @@ function myChart2(data) {
 
   var ctx = $('#chart2');
   var myChart = new Chart(ctx, {
-      type: data.d2['type'],
+      type: data['type'],
       data: {
-          labels: data.d2['labels'],
+          labels: data['labels'],
           datasets: [{
               label: '# of Votes',
-              data: data.d2['data'],
+              data: data['data'],
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
                   'rgba(54, 162, 235, 0.2)',
@@ -101,7 +99,7 @@ function myChart2(data) {
               borderWidth: 1
           }]
       },
-      access: data.d2['access'],
+      access: data['access'],
       options: {
           scales: {
               yAxes: [{
@@ -118,12 +116,12 @@ function myChart3(data,months) {
 
   var ctx = $('#chart3');
   var myChart = new Chart(ctx, {
-      type: data.d3['type'],
+      type: data['type'],
       data: {
           labels: capitaliseMonth(months),
           datasets: [{
-              label: data.d3['labels'][0],
-              data: data.d3['data'][0],
+              label: data['labels'][0],
+              data: data['data'][0],
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)'
 
@@ -135,8 +133,8 @@ function myChart3(data,months) {
               borderWidth: 6
           },
           {
-              label: data.d3['labels'][1],
-              data: data.d3['data'][1],
+              label: data['labels'][1],
+              data: data['data'][1],
               backgroundColor: [
                   'rgba(54, 162, 235, 0.2)'
 
@@ -148,8 +146,8 @@ function myChart3(data,months) {
               borderWidth: 6
           },
           {
-              label: data.d3['labels'][2],
-              data: data.d3['data'][2],
+              label: data['labels'][2],
+              data: data['data'][2],
               backgroundColor: [
                   'rgba(255, 206, 86, 0.2)'
 
@@ -164,7 +162,7 @@ function myChart3(data,months) {
 
       },
 
-      access: data.d2['access'],
+      access: data['access'],
       options: {
           scales: {
               yAxes: [{
@@ -176,7 +174,6 @@ function myChart3(data,months) {
       }
   });
 }
-
 
 
 function capitaliseMonth(array) {
