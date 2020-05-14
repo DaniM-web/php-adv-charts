@@ -1,33 +1,33 @@
-function getQuery() {
-  var queryString = window.location.search;
-
-  var urlParams = new URLSearchParams(queryString);
-  var levelQuery = urlParams.get('level');
-
-  return levelQuery;
-}
 
 function callAjax() {
   $.ajax({
-    url: 'server.php',
+    url: 'server/server.php',
     method: 'GET',
     data: {
       level: getQuery()
     },
     success: function (data) {
       var months = moment.months();
-      
-      myChart1(data['d1'],months);
-      myChart2(data['d2']);
-      myChart3(data['d3'],months);
+
+      if ("fatturato" in data) {
+        myChart1(data['fatturato'],months);
+      }
+
+      if ("fatturato_by_agent" in data) {
+        myChart2(data['fatturato_by_agent']);
+      }
+
+      if ("team_efficiency" in data) {
+        myChart3(data['team_efficiency'],months);
+      }
 
     },
     error: function (error) {
-      console.log("Error!!!");
+      console.error("Error!!!");
     }
   })
 }
-
+// Definizione del grafico 1
 function myChart1(data,months) {
 
   var ctx = $('#chart1');
@@ -36,7 +36,7 @@ function myChart1(data,months) {
       data: {
           labels: capitaliseMonth(months),
           datasets: [{
-              label: '# of Votes',
+              label: 'Vendite',
               data: data['data'],
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
@@ -69,7 +69,7 @@ function myChart1(data,months) {
       }
   });
 }
-
+// Definizione del grafico 2
 function myChart2(data) {
 
   var ctx = $('#chart2');
@@ -112,6 +112,7 @@ function myChart2(data) {
   });
 }
 
+// Definizione del grafico 3
 function myChart3(data,months) {
 
   var ctx = $('#chart3');
@@ -175,7 +176,7 @@ function myChart3(data,months) {
   });
 }
 
-
+// Funzione che,passato un array, ritorna le parole con la prima lettera maiuscola
 function capitaliseMonth(array) {
     var monthsUpperCase = [];
     for (var i = 0; i < array.length; i++) {
@@ -187,5 +188,14 @@ function capitaliseMonth(array) {
     }
     console.log("arrayCompleto con prima lettera maiuscola ",monthsUpperCase);
     return monthsUpperCase;
+  }
 
+  // Funzione per ricavarmi la query su JS
+  function getQuery() {
+    var queryString = window.location.search;
+
+    var urlParams = new URLSearchParams(queryString);
+    var levelQuery = urlParams.get('level');
+
+    return levelQuery;
   }
